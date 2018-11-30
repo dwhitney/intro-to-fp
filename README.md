@@ -73,22 +73,126 @@ The items listed in the title of this session are the tools for reuse in functio
       * `def foo(i : Int) : Int`
     * How many implementations are there for the following functions:
       * `def foo[A](a : A) : A`
-      * `def foo2[A](a : A, aa : A) : (A, A)`
+      * `def foo2[A](a : A, aa : A) : A`
     * How could I call that function?
-      ```
-      def id[A](a : A) : A
-      def tupled[A](a : A, aa : A) : (A, A)
+      ```scala
+      def id[A](a : A) : A = a
+      def first(a 
 
       val num : Int = 5
       val sameNum = id(num)
-      val tupledNum = tupled(num, sameNum)
 
       val str : String = "asdf"
       val sameStr = id(str)
-      val tupledStr = tupled(str, sameStr)
       ```
     * Cool, one implementation for many types, but not really that useful...
-  * Typeclasses
+  * Type classes
+    * Type classes describe functionality
+    ```scala
+    trait Combinable[A]{
+      def combine(a : A, aa : A): A
+    }
+    ```
+    * They are then made concrete as implicit values
+    ```scala
+    object Combinable{
+
+      implicit object combinableInt extends Combinable[Int]{
+        def combine(i : Int, ii : Int) = i + ii
+      }
+      
+      implicit object combinableString extends Combinable[String]{
+        def combine(s : String, ss : String) = s + ss 
+      }
+ 
+    }
+
+    trait Combinable[A]{
+      def combine(a : A, aa : A): A
+    }
+    ```
+  * Constraints
+    * Let's now revisit a polymorphic funtion 
+    ```scala
+    def append[A](a : A, aa : A) : A 
+    ```
+    * Again - how many valid impelmentations?
+    
+    * Now let's add a type constraint with our type class
+    ```scala
+    def append[A : Combinable](a : A, aa : A) : A 
+   
+    // or equivalently  
+
+    def appendV2[A](a : A, aa : A)(implicit combinable: Combinable[A]) : A 
+    ```
+    * Now how many valid implementations are there? 
+    ```
+    def append[A : Combinable](a : A, aa : A) : A = 
+      Combinable[A].combine(a, aa)
+
+    // or equivalently
+
+    def appendV2[A](a : A, aa : A)(implicit combinable: Combinable[A]) : A = 
+      combinable.combine(a, aa)
+
+    ```
+    * Hey did you know that `Combinable` is also called `Semigroup`?!?
+    ```
+    import cats._
+    import cats.implicits._
+
+    def append[A : Semigroup](a : A, aa : A) : A = 
+      Semigroup[A].combine(a, aa)
+
+    // or equivalently
+
+    def appendV2[A](a : A, aa : A)(implicit semigroup: Semigroup[A]) : A = 
+      semigroup.combine(a, aa)
+
+    ```
+  * Higher Kinded Types
+    more work to be done here...
+
+*hands-on*
+* Show them a definition of something called `CombinableWithEmpty[A]` that extends `Combinable[A]` but includes an addtional method called `empty` which returns an empty value for the given type. Then show a function called `def fold[A : CombinableWithEmpty](list : List[A]) = list.fold(CombinableWithEmpty.empty)((a, aa) => CombinableWithEmpty.append(a, aa))` and have them implement an instance of `CombinableWithEmpty[A]` for `Int` and `String` that will work with fold
+* Have them implement an instance of `CombinableKind[[F[_]]` (discussed un the unfleshed out section "Higher Kinded Types") for the `Option` type 
+
+*discussion*
+* Solve the previous examples
+* Show how `CombinableWithEmpty[A]` is an equivalent to `Monoid[A]`
+
+
+### Day-To-Day: Functor / Applicative Functor / Traverse
+
+*goal* 
+
+This is both a place where focusing on practical examples and theory would be very good. So I want to define a `Functor` and show what happens when `map` is called on various Scala data structures, starting with `List`, and then `Option`, `Future`, and `Either`. I think it's important to start with `List` because it was an especially acute mental leap for me to go from mapping over a list to mapping over an Option. The two things seemed completely different, yet they are the same. Then I want to define `Applicative` and `Traverse` And then just do a bunch of examples of how to use their properties
+ 
+
+### Applied Theory: Functor / Applicative Functor / Traverse
+
+*goal*
+
+Here I want to quickly review the type classes we've studied so far: `Semigroup`, `Monoid`, `Functor`, `Applicative`, `Traverse` and then I want to introduce a data structure called `Maybe`. It is the functional equivalent of `Option`. Then I want most of the day to be focused on having people implement instances of the reviewed type classes for this new type, with the ultimate goal of running it through some constrained functions that already work for various other data structures with instances already defined in cats.
+
+
+### Day-to-Day: Monad
+
+*goal* Take a look at `flatMap` and note the slight difference in type signature from `map`, defined in `Functor`. Show several examples of how `map` and `flatMap` work when used on `Option`, `Either`, `Future`, and `List`. Note how flow can be modified with `flatMap` but not `map`, and how this gives rise to the description `Monad` as an abstraction for sequencing. Then put a bunch of `Monad`s into for comprehensions and compare how it looks to chianed `flatMap`s. Describe the "Happy Path" and how `Monad` makes things "work" without needing a lot of extraneous flow control and error checking.
+
+### Applied Theory: Monad
+
+*goal* Introduce the `FlatMap` type class and how how it fits into the `Monad` type class. Then provide instances of `Monad` to our `Maybe` type from the previous "theory" day. Roam around and help, and finally show my own implementation
+
+### Monad Transformers
+
+*goal* Show the problem, that has likely been very painful for everyone, caused by the fact that `Monads` don't compose. 
+
+
+
+
+
 
 
 
