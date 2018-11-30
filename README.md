@@ -61,10 +61,35 @@ If our overall goal in using function programming is to bring the world of mathe
 *discussion*
   * solve the problems and answer questions
 
-### Parametric PolyMorphism / Higher Kinded Types / Constraints
+### Parametric Polymorphism / Type Classes / Constraints / Higher Kinded Types
+
+*goal*
+
+The items listed in the title of this session are the tools for reuse in functional programming. We'll start with parametric polymorphism and build our way up to functions that use type class constraints. I'd like to introduce `Semigroup` and `Monoid` by way of constructing our own type classes with more familiar names, and then showing that they are the equivalent of `Semigroup` and `Monoid`. I'd like to end by showing two examples of `Monoid` that are more day-to-day useful than `String` and `Int` -- I'll show a `Monoid` instance for a parser in Scala and something that combines two 
+
+*lecture*
+  * Parametric Polymorphism
+    * How many implementations are there for the following function:
+      * `def foo(i : Int) : Int`
+    * How many implementations are there for the following functions:
+      * `def foo[A](a : A) : A`
+      * `def foo2[A](a : A, aa : A) : (A, A)`
+    * How could I call that function?
+      ```
+      def id[A](a : A) : A
+      def tupled[A](a : A, aa : A) : (A, A)
+
+      val num : Int = 5
+      val sameNum = id(num)
+      val tupledNum = tupled(num, sameNum)
+
+      val str : String = "asdf"
+      val sameStr = id(str)
+      val tupledStr = tupled(str, sameStr)
+      ```
+    * Cool, one implementation for many types, but not really that useful...
+  * Typeclasses
 
 
-
-### 
 
 
