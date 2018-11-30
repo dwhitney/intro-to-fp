@@ -8,4 +8,4 @@ To learn functional programming patterns I believe it's best to examine several 
 
 ### Is this worth knowing?
 
-![cats type classes](https://cdn.rawgit.com/tpolecat/cats-infographic/master/cats.svg)
+![cats type classes](cats.svg)
