@@ -187,7 +187,22 @@ Here I want to quickly review the type classes we've studied so far: `Semigroup`
 
 ### Monad Transformers
 
-*goal* Show the problem, that has likely been very painful for everyone, caused by the fact that `Monads` don't compose. 
+*goal* 
+Show the problem, that has likely been very painful for everyone, caused by the fact that `Monads` don't compose. Quickly introduce `OptionT` and `EitherT` and pay a bit of lip service to `Kleisli` before quickly moving onto `cats-mtl`. Then I'll have some people write the implementations for functions that force the combination of `Option`, `Either` and perhaps `Future`. 
+
+### Reader / Writer / State
+
+*goal* 
+
+Notably in `cats-mtl` there three monads known as `Reader`, `Writer`, and `State`. They play a prominent role in what's known as `mtl style`. We'll go over how to use them and why you'd want to use them.
+
+### ApplicativeError, MonadError 
+
+### Effects
+
+### Free Monad
+
+### Optics
 
 
 
