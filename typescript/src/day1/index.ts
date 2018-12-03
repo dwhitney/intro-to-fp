@@ -1,5 +1,5 @@
 
-const foo = <A>(a : A) : A  => a;
+const y = (m : number, x : number, b : number) : number => m * x + b;
+const five : number = y(1, 2, 3);
 
-console.log(foo("asdf"));
-console.log(foo(20));
+console.assert(five === 5);
