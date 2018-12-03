@@ -34,7 +34,7 @@ In computer science courses we learned truths about data structures, algorithms,
 
 *goal*
 
-If our overall goal in using function programming is to bring the world of mathematics into our programming life, then it makes sense to start by looking at mathematic functions and how they differ from functions in our imperative programming languages. Setting syntax aside, the primary difference is the primary difference is that mathematical functions are referentially transparent (pure) and imperative functions allow for side effects. We'll walk through what this means, and show how you can still get things done without using side effects.
+If our overall goal in using function programming is to bring the world of mathematics into our programming life, then it makes sense to start by looking at mathematic functions and how they differ from functions in our imperative programming languages. Setting syntax aside, the primary difference is that mathematical functions are referentially transparent (pure) and imperative functions allow for side effects. We'll walk through what this means, and show how you can still get things done without using side effects.
 
 *lecture*
 

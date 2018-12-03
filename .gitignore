@@ -1,2 +1,5 @@
 target/
 project/
+node_modules/
+output/
+build/
