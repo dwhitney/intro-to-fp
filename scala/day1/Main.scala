@@ -20,8 +20,10 @@ object Main extends App{
   def increment(): Unit = count = count + 1
   def getCount(): Int = count
 
+  val zero = getCount()
   increment()
-  println(getCount())
+  println(zero == getCount()) //false
+
 
 
   println(sum(List(1, 2, 3)))

@@ -23,8 +23,10 @@ let count: number = 0;
 const increment: Increment = () => { count++; }
 const getCount: GetCount = () => count;
 
+const result: number = getCount();
 increment();
-console.log(getCount());
+result === getCount(); //false
+
 
 
 type IsTodayOdd = () => boolean;

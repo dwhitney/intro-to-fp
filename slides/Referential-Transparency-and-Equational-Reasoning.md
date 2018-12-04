@@ -12,6 +12,12 @@ An expression is called *referentially transparent* if it can be replaced with i
 ---
 
 ## Pure Functions 
+*Math*
+
+```
+y(m, x, b) = m * x + b
+five = y(1, 2, 3)
+```
 *Scala*
 
 ```scala
@@ -28,7 +34,15 @@ const five: number = y(1, 2, 3);
 ```
 ---
 
-## Pure Functions
+## Pure Functions: Substitution
+*Math*
+
+[.code-highlight: 2]
+```
+y(m, x, b) = m * x + b
+five = 5
+
+```
 *Scala*
 
 [.code-highlight: 2]
@@ -36,7 +50,6 @@ const five: number = y(1, 2, 3);
 def y(m : Int, x : Int, b : Int): Int = m * x + b
 val five = 5
 ```
-
 *JavaScript*
 
 [.code-highlight: 3]
@@ -48,7 +61,7 @@ const five: number = 5;
 
 ---
 
-## More Pure Functions
+## More Pure Functions: Substitution?
 
 *JavaScript*
 
@@ -65,7 +78,7 @@ const sum: Sum = nums => {
 ```
 
 ---
-## More Pure Functions
+## More Pure Functions: Substitution?
 
 *Scala*
 
@@ -89,6 +102,10 @@ ___
 var count: Int = 0
 def increment(): Unit = count = count + 1
 def getCount(): Int = count
+
+val zero = getCount()
+increment()
+zero == getCount() //false
 ```
 
 *JavaScript*
@@ -99,6 +116,10 @@ type GetCount = () => number;
 let count: number = 0;
 const increment: Increment = () => { count++; }
 const getCount: GetCount = () => count;
+
+const result: number = getCount();
+increment();
+result === getCount(); //false
 ```
 
 ---
@@ -143,13 +164,130 @@ const helloWorld: HelloWorld = () =>
 ---
 
 ## What makes a function impure?
-[*noboddy quite agrees*](https://stackoverflow.com/questions/4865616/purity-vs-referential-transparency), but roughly if it performs side effects:
+[*nobody quite agrees*](https://stackoverflow.com/questions/4865616/purity-vs-referential-transparency), but roughly, side effecting functions:
 
-* I/O (disk, network, console)
-* Gets a value from *outside of the program* (Dates, Random numbers)
-* Modifies memory beyond its scope
-* (De)Allocates memory (if you want to be pedantic)
+* Perform I/O (disk, network, console)
+* Get values from *outside of the program* (dates, random numbers)
+* Modifying values beyond its scope
 
 --- 
 
 ## Side Effects
+
+Come down from your ivory tower, Poindexter. All I do all day is make side-effects! How do I get anything done if I can't do that!
+
+---
+
+### Side Effects: Pure Functions
+
+```
+y = m * x + b
+```
+
+---
+
+### Side Effects: Side Effects
+
+[.code-highlight: 2]
+```
+y = m * x + b
+y = (e * m) * (e * x) + (e * b)
+```
+
+---
+
+### Side Effects: Factor out Side Effects
+
+[.code-highlight: 3]
+```
+y = m * x + b
+y = (e * m) * (e * x) + (e * b)
+y = e(m * x + b)
+```
+
+---
+
+### Side Effects: Bind More Side Effects
+
+[.code-highlight: 4]
+```
+y = m * x + b
+y = (e * m) * (e * x) + (e * b)
+y = e(m * x + b)
+y = e(m * x + b) + e(5)
+```
+---
+
+### Side Effects: Bind More Side Effects
+
+[.code-highlight: 5]
+```
+y = m * x + b
+y = (e * m) * (e * x) + (e * b)
+y = e(m * x + b)
+y = e(m * x + b) + e(5)
+y = e(m * x + b + 5)
+```
+---
+
+### Side Effects: Map in Pure Functions
+
+[.code-highlight: 6]
+```
+y = m * x + b
+y = (e * m) * (e * x) + (e * b)
+y = e(m * x + b)
+y = e(m * x + b) + e(5)
+y = e(m * x + b + 5)
+y = e(m * x + b + 5) + 10
+```
+---
+
+### Side Effects: Map in Pure Functions
+
+[.code-highlight: 7]
+```
+y = m * x + b
+y = (e * m) * (e * x) + (e * b)
+y = e(m * x + b)
+y = e(m * x + b) + e(5)
+y = e(m * x + b + 5)
+y = e(m * x + b + 5) + 10
+y = e(m * x + b + 5 + 10)
+```
+---
+
+### Side Effects: Essence of FP 
+
+```
+y = m * x + b
+y = (e * m) * (e * x) + (e * b)
+y = e(m * x + b)
+y = e(m * x + b) + e(5)
+y = e(m * x + b + 5)
+y = e(m * x + b + 5) + 10
+y = e(m * x + b + 5 + 10)
+```
+#### FP is Essentially
+* binding side effecting contexts together (*flatMap*)
+* mapping pure functions into side effecting contexts (*map*)
+
+---
+
+## What does this look like in practice?
+
+DEMO TIME
+
+___
+
+## Equational Reasoning
+
+
+
+
+
+
+
+
+
+
