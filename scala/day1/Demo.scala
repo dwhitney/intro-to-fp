@@ -5,7 +5,7 @@ import cats.implicits._
 import cats.effect._
 
 
-object Implicits {
+object Implicits{
 
   implicit val mio = new M[IO]{
     def m: IO[Int] = IO(1)
@@ -57,6 +57,12 @@ object Y{
 
 }
 
+/**
+ * Demo Notes: 
+ *  0. Explain what we're looking at
+ *  1. Switch out the implicits - use AlternativeImplicits.bio instead of Implicits.bio
+ *  2. Show how each of the steps in the "Side Effects" slides can be achieved by building off `example1`
+**/
 object Demo extends App{
   import Implicits._
   import Y._
