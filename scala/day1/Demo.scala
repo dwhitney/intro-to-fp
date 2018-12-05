@@ -21,7 +21,7 @@ object Demo extends App{
   def y(m: Int, x: Int, b: Int): Int = m * x + b
   
   val example1: IO[Int] = for {
-    m <- SideEffects.slope 
+    m <- slope 
     x <- xcoordinate
     b <- yintercept 
   } yield y(m, x, b)
