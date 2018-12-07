@@ -164,11 +164,11 @@ const helloWorld: HelloWorld = () =>
 ---
 
 ## What makes a function impure?
-[*nobody quite agrees*](https://stackoverflow.com/questions/4865616/purity-vs-referential-transparency), but roughly, side effecting functions:
+Side effecting functions:
 
 * Perform I/O (disk, network, console)
 * Get values from *outside of the program* (dates, random numbers)
-* Modifying values beyond its scope
+* Modify values beyond its scope
 
 --- 
 

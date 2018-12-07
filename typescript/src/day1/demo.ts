@@ -1,23 +1,19 @@
-import { HKT } from "fp-ts/lib/HKT";
-//import { IO, io, URI as IOURI } from "fp-ts/lib/IO";
-import { Monad } from "fp-ts/lib/Monad";
-
-// type classes
-
-export interface Slope<E> {
-  m : () => HKT<E, number>
-}
-
-export interface XCoordinate<E> {
-  x : () => HKT<E, number>
-}
-
-export interface YIntercept<E> {
-  b : () => HKT<E, number>
-}
-
-export interface Demo<M> extends Slope<M>, XCoordinate<M>, YIntercept<M>, Monad<M> {}
+import { IO, io } from "fp-ts/lib/IO";
 
 
-//const slopeIO: Slope<IOURI>
+const slope: IO<number> = io.of(1);
 
+const xcoordinate: IO<number> = io.of(2);
+
+const yintercept: IO<number> = io.of(3);
+
+const y = (m: number) => (x: number) => (b: number) => m * x + b;
+
+const program: IO<number> = 
+  io.of(y)
+    .ap_(slope)
+    .ap_(xcoordinate)
+    .ap_(yintercept)
+
+
+console.log(program.run())
