@@ -28,6 +28,15 @@ export class Form<I,A>{
   constructor(
     readonly update: (_: I) => { render: UpdateUI<I>, result: A }
   ){}
+
+  ap<B>(fab: Form<I, (a: A) => B>): Form<I, B> {
+    return form.ap<I,A,B>(fab, this)
+  }
+
+  ap_<B, C>(this: Form<I, (b: B) => C>, fb: Form<I, B>): Form<I, C> {
+    return fb.ap(this)
+  }
+
 }
 
 const map = <L, A, B>(form: Form<L, A>, f: (a: A) => B): Form<L, B> => 

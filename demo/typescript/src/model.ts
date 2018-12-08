@@ -7,7 +7,7 @@ export interface Street extends Newtype<{readonly Street: unique symbol}, string
 export interface City extends Newtype<{readonly Street: unique symbol}, string>{}
 export interface State extends Newtype<{readonly Street: unique symbol}, string>{}
 export interface Zip extends Newtype<{readonly Street: unique symbol}, number>{}
-export type Address = { readonly street : Street, readonly city: City, readonly state: State, zip: Zip }
+export type Address = { readonly city: City, readonly state: State, readonly street: Street, readonly zip: Zip }
 
 export const _street      = Lens.fromProp<Address>()("street");
 export const _city        = Lens.fromProp<Address>()("city");
