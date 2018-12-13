@@ -282,9 +282,231 @@ ___
 
 ## Equational Reasoning
 
+*Equational reasoning* is the notion that we can understand what to expect from a function simply by looking at a function's types and their associated properties. 
 
+---
+## Equational Reasoning: Example
 
+$$
+\begin{equation*}
+\begin{aligned}
+& y(m,x, b) 
+& = m * x + b \\
+& \text{where}
+& m,x,b,y \in ℝ
+\end{aligned}
+\end{equation*}
+$$
 
+![inline](./empty_plane.svg)
+
+___
+
+## Equational Reasoning: Example
+$$
+\begin{equation*}
+\begin{aligned}
+& y(m,x,b) 
+& = m * x + b \\
+& \text{where}
+& m,x,b,y \in ℝ
+\end{aligned}
+\end{equation*}
+$$
+
+![inline](./all_quadrants.svg)
+
+___
+
+## Equational Reasoning: Example
+$$
+\begin{equation*}
+\begin{aligned}
+& y(m,x,b) 
+& = m * x + b \\
+& \text{where}
+& m,x,b,y \in ℕ 
+\end{aligned}
+\end{equation*}
+$$
+
+![inline](./empty_plane.svg)
+
+___
+
+## Equational Reasoning: Example
+$$
+\begin{equation*}
+\begin{aligned}
+& y(m,x,b) 
+& = m * x + b \\
+& \text{where}
+& m,x,b,y \in ℕ 
+\end{aligned}
+\end{equation*}
+$$
+
+![inline](./q_1.svg)
+
+___
+
+## Equational Reasoning: Example
+
+$$
+\begin{equation*}
+\begin{aligned}
+& y(m,x,b) 
+& = \ldots \\
+& \text{where}
+& m,x,b,y \in ℕ 
+\end{aligned}
+\end{equation*}
+$$
+
+![inline](./empty_plane.svg)
+
+___
+
+## Equational Reasoning: Example
+
+$$
+\begin{equation*}
+\begin{aligned}
+& y(m,x,b) 
+& = \ldots \\
+& \text{where}
+& m,x,b,y \in ℕ  \\
+\\
+& r(n)
+& = \ldots \\
+& & n \in ℕ \\
+& & r \in ℝ \\
+\\
+& n(r)
+& = \ldots \\
+& & n \in ℕ \\
+& & r \in ℝ
+\end{aligned}
+\end{equation*}
+$$
+
+![inline](./empty_plane.svg)
+
+___
+
+## Equational Reasoning: Example
+
+$$
+\begin{equation*}
+\begin{aligned}
+& y(m,x,b) 
+& = \ldots \\
+& \text{where}
+& m,x,b,y \in ℕ  \\
+\\
+& r(n)
+& = \ldots \\
+& & n \in ℕ \\
+& & r \in ℝ \\
+\\
+& n(r)
+& = \ldots \\
+& & n \in ℕ \\
+& & r \in ℝ
+\end{aligned}
+\end{equation*}
+$$
+
+![inline](./q_1.svg)
+
+___
+
+## Equational Reasoning: Code
+
+*Scala* 
+
+```scala
+def addNaturalNumbers(a: Int, b: Int): Either[Throwable,Int] = ???
+```
+
+*JavaScript*
+
+```javascript
+type NaturalNumberCalc = (number, number) => Either<Error,number>
+const addNaturalNumbers: NaturalNumberCalc = (a, b) => ...
+```
+
+___
+
+## Equational Reasoning: Code
+
+*Scala* 
+
+```scala
+def addNaturalNumbers(a: NaturalNumber, b: NaturalNumber): NaturalNumber = ???
+```
+
+*JavaScript*
+
+```javascript
+type NaturalNumberCalc = (NaturalNumber, NaturalNumber) => NaturalNumber
+const addNaturalNumbers: NaturalNumberCalc = (a, b) => ...
+```
+___
+
+## Equational Reasoning: Code
+
+*Scala* 
+
+```scala
+ def createUser(username: String, emailAddress: String): Either[Throwable, User]
+
+ def createUser(username: Username, emailAddress: EmailAddress): User
+```
+
+*JavaScript*
+
+```javascript
+type CreateUser = (String, String) => Either<Throwable,User>
+const createUser: CreateUser = (username, emailAddress) => ... 
+
+type CreateUser = (Username, EmailAddress) => User
+const createUser: CreateUser = (username, emailAddress) => ... 
+```
+
+___
+
+## Equational Reasoning: Example
+
+Imagine each function below must be pure. How many possible implementations can each function have?
+
+*Scala*
+
+```scala
+def foo[A](a: A): A = ??? 
+```
+*JavaScript*
+
+```javascript
+const foo = <A>(a: A): A => ??? 
+```
+
+___
+
+## Equational Reasoning: Example
+
+Imagine each function below must be pure. How many possible implementations can each function have?
+
+*Scala*
+
+```scala
+def foo[A](a: A, a2: A): A = ??? 
+```
+*JavaScript*
+
+```javascript
+const foo = <A>(a: A, a2: A): A => ??? 
+```
 
 
 

@@ -40,3 +40,21 @@ const helloWorld: HelloWorld = () =>
   console.log("Hello, World!")
 
 helloWorld()
+
+const foo = <A>(a: A): A => a
+
+console.log(foo("foo"));
+
+type NaturalNumber = number //pretend this is better than this :)
+type YNat = (NaturalNumber, NaturalNumber, NaturalNumber) => NaturalNumber
+const ynat: YNat = (m, x, b) => m * x + b
+
+
+type User = String
+type Password = String
+type Username = String
+type Either<A, B> = Either<A,B>
+
+type GetByUsernameAndPassword = (Username, Password) => Either<Error, User>
+const getByUsernameAndPassword: GetByUsernameAndPassword = (username, password) => null
+
