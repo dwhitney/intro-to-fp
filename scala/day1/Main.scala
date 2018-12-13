@@ -1,5 +1,9 @@
 package day1
 
+import cats._
+import cats.implicits._
+import cats.effect._
+
 object Main extends App{
 
   def y(m : Int, x : Int, b : Int): Int = m * x + b
@@ -39,9 +43,12 @@ object Main extends App{
   helloWorld()
 
   
-  type NaturalNumber = Int
+  case class NaturalNumber private (n: Int)
+  object NaturalNumber{
+    def create(n: Int): Either[Throwable, NaturalNumber] = ???
+  }
 
-  def yNat(m: NaturalNumber, x: NaturalNumber, b: NaturalNumber): NaturalNumber = m + x + b
+  def yNat(m: NaturalNumber, x: NaturalNumber, b: NaturalNumber): NaturalNumber = ???
 
   type Username = String
   type Password = String
@@ -57,6 +64,33 @@ object Main extends App{
   def foo[A](a: A, a1: A, combiner : (A, A) => A): A = combiner(a, a1)
 
   println(foo(1, 2, (a: Int, b: Int) => a + b))
+
+  //val xs = List(1, 2, 3)
+  type Points = (Int, Int)
+  type Chart = Any
+  type SVG = Any
+
+  /*
+  def makePoints(xs: List[Int]): List[Points] = ???
+  def plot(points: List[Points]): Chart = ???
+  def toSVG(chart: Chart): Chart = ???
+  def render(xs: List[Int]): Chart = toSVG(plot(makePoints(xs)))
+  */
+  
+  def makePoints(xs: List[Int]): IO[List[Points]] = ???
+  def plot(points: List[Points]): IO[Chart] = ???
+  def toSVG(chart: Chart): IO[SVG] = ???
+  def render(xs: List[Int]): IO[SVG] = for {
+    points  <- makePoints(xs)
+    chart   <- plot(points)
+    svg     <- toSVG(chart) 
+  } yield svg 
+
+  def render2(xs: List[Int]): IO[SVG] = 
+    makePoints(xs)
+      .flatMap(plot)
+      .flatMap(toSVG)
+  
 
 
 }

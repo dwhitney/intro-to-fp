@@ -28,9 +28,8 @@ val five = y(1, 2, 3)
 *JavaScript*
 
 ```javascript
-type Y = (number, number, number) => number;
-const y: Y = (m, x, b) => m * x + b;
-const five: number = y(1, 2, 3);
+const y = (m: number, x: number, b: number): number => m * x + b;
+const five = y(1, 2, 3);
 ```
 ---
 
@@ -52,11 +51,10 @@ val five = 5
 ```
 *JavaScript*
 
-[.code-highlight: 3]
+[.code-highlight: 2]
 ```javascript
-type Y = (number, number, number) => number;
-const y: Y = (m, x, b) => m * x + b;
-const five: number = 5;
+const y = (m: number, x: number, b: number): number => m * x + b
+const five = 5
 ```
 
 ---
@@ -66,15 +64,15 @@ const five: number = 5;
 *JavaScript*
 
 ```javascript
-type Sum = Array<number> => number;
-const sum: Sum = nums => {
+import { List } from "immutable"
+
+const sum = (nums: List<number>): number => {
   let total = 0;
   for(let num of nums){
     total += num;
   }
   return total;
 }
-
 ```
 
 ---
@@ -111,15 +109,13 @@ zero == getCount() //false
 *JavaScript*
 
 ```javascript
-type Increment = () => void;
-type GetCount = () => number;
-let count: number = 0;
-const increment: Increment = () => { count++; }
-const getCount: GetCount = () => count;
+let count: number = 0
+const increment = (): void  => { count++ }
+const getCount = (): number => count
 
-const result: number = getCount();
-increment();
-result === getCount(); //false
+const result: number = getCount()
+increment()
+result === getCount() //false
 ```
 
 ---
@@ -136,8 +132,7 @@ def isTodayOdd(): Boolean =
 *JavaScript*
 
 ```javascript
-type IsTodayOdd = () => boolean;
-const isTodayDayOdd: IsTodayOdd = () => 
+const isTodayDayOdd = (): boolean => 
   (new Date().getDay() + 1) % 2 === 0
 
 ```
@@ -156,8 +151,7 @@ def getText(fileName: String): String =
 *JavaScript*
 
 ```javascript
-type GetText = (String) => String;
-const getText: GetText = (fileName) => 
+const getText = (fileName: string): string => 
   fs.readFileSync(fileName).toString()
 ```
 
@@ -432,8 +426,7 @@ def addNaturalNumbers(a: Int, b: Int): Either[Throwable,Int] = ???
 *JavaScript*
 
 ```javascript
-type NaturalNumberCalc = (number, number) => Either<Error,number>
-const addNaturalNumbers: NaturalNumberCalc = (a, b) => ...
+const addNaturalNumbers = (a: number, b: number): Either<Error,number> => ...
 ```
 
 ___
@@ -443,14 +436,21 @@ ___
 *Scala* 
 
 ```scala
+case class NaturalNumber private (n: Int)
+object NaturalNumber{
+  def create(n: Int): Either[Throwable, NaturalNumber] = ???
+}
+
 def addNaturalNumbers(a: NaturalNumber, b: NaturalNumber): NaturalNumber = ???
 ```
 
 *JavaScript*
 
 ```javascript
-type NaturalNumberCalc = (NaturalNumber, NaturalNumber) => NaturalNumber
-const addNaturalNumbers: NaturalNumberCalc = (a, b) => ...
+opaque type NaturalNumber = number 
+const createNaturalNumber = (n: number): Either<Error, NaturalNumber> => 
+
+const addNaturalNumbers = (a: NaturalNumber, b: NaturalNumber): NaturalNumber => 
 ```
 ___
 
@@ -459,19 +459,17 @@ ___
 *Scala* 
 
 ```scala
- def createUser(username: String, emailAddress: String): Either[Throwable, User]
+ def createUser(username: String, email: String): Either[Throwable, User]
 
- def createUser(username: Username, emailAddress: EmailAddress): User
+ def createUser(username: Username, email: Email): User
 ```
 
 *JavaScript*
 
 ```javascript
-type CreateUser = (String, String) => Either<Throwable,User>
-const createUser: CreateUser = (username, emailAddress) => ... 
+const createUser = (username: string, email: string): Either<Throwable,User> => ... 
 
-type CreateUser = (Username, EmailAddress) => User
-const createUser: CreateUser = (username, emailAddress) => ... 
+const createUser = (username: Username, email: Email): User => ... 
 ```
 
 ___
@@ -546,6 +544,68 @@ const foo = (a: number): Void => ...
 ___
 
 
+## Equational Reasoning: Composition
+
+*Scala*
+
+
+```scala
+def makePoints(xs: List[Int]): List[Points] = ...
+def plot(points: List[Points]): Chart = ...
+def toSVG(chart: Chart): Chart = ...
+def render(xs: List[Int]): Chart = toSVG(plot(makePoints(xs)))
+```
+
+*JavaScript*
+
+```javascript
+const makePoints = (xs: List<number>): Points => 
+const plot = (points: Points): Chart => 
+const toSVG = (chart: Chart): SVG => 
+const render = (xs: List<number>): SVG => toSVG(plot(makePoints(xs)))
+
+```
+___
+
+## Equational Reasoning: Composition with Side Effects
+
+*Scala*
+
+
+```scala
+def makePoints(xs: List[Int]): IO[List[Points]] = ???
+def plot(points: List[Points]): IO[Chart] = ???
+def toSVG(chart: Chart): IO[SVG] = ???
+def render(xs: List[Int]): IO[SVG] = for {
+  points  <- makePoints(xs)
+  chart   <- plot(points)
+  svg     <- toSVG(chart) 
+} yield svg 
+
+def render2(xs: List[Int]): IO[SVG] = 
+  makePoints(xs)
+    .flatMap(plot)
+    .flatMap(toSVG)
+```
+___
+
+## Equational Reasoning: Composition with Side Effects
+
+*JavaScript*
+
+```javascript
+const makePoints = (xs: List<number>): IO<Points> => 
+const plot = (points: Points): IO<Chart> => 
+const toSVG = (chart: Chart): IO<SVG> => 
+const render = (xs: List<number>): IO<SVG> => 
+  makePoints(xs)
+    .chain(plot)
+    .chain(toSVG)
+
+```
+___
+
+
 ## Equational Reasoning: Theory 
 
 Adding properties...
@@ -564,42 +624,92 @@ foo("a","b", ((a,b) => a + b))
 
 ___
 
-## Equational Reasoning: Composition
+## Equational Reasoning: Practice
 
-
-
-
-___
-
-## How to work this into your day to day?
-
-NO CURLY BRACES!
+You can work these concepts into your day by not using curly braces.
 
 *Scala*
 
 ```scala
-val example1: IO[Int] = for {
-    m <- slope 
-    x <- xcoordinate
-    b <- yintercept 
-  } yield y(m, x, b)
-
+def render(xs: List[Int]): IO[SVG] = 
+  makePoints(xs)
+    .flatMap(plot)
+    .flatMap(toSVG)
 ```
 
 *JavaScript*
 
 ```javascript
-const program: IO<number> = 
-  io.of(y)
-    .ap_(slope)
-    .ap_(xcoordinate)
-    .ap_(yintercept)
+const render = (xs: List<number>): IO<SVG> => 
+  makePoints(xs)
+    .chain(plot)
+    .chain(toSVG)
 ```
 
 ___
 
 ## Summary
 
+* *Referentially transparent* functions are *pure* and have no *side effects*
+* *pure* functions make us feel "safe" because they are predictable and do not mutate external state
+* *pure* functions are easy to reason about because they have clear boundaries (domain/range)
+* *pure* functions *compose*, which allows you to build large programs (functions) by combining small components (functions)
+* functional programming seeks to "factor out" side effects from pure code, so that you can make referentially transparent functions
+
 ___
 
-## Exercises
+## Exercises: find the last element of a list
+*for now assume the list isn't empty*
+
+Example:
+
+scala> last(List(1, 1, 2, 3, 5, 8))
+res0: Int = 8*
+
+___
+
+## Exercises: find the last element of a list
+*for now assume the list isn't empty*
+
+Example:
+
+scala> penultimate(List(1, 1, 2, 3, 5, 8))
+res0: Int = 5
+___
+
+## Exercises: Reverse a list.
+*for now assume the list isn't empty*
+
+Example:
+
+scala> reverse(List(1, 1, 2, 3, 5, 8))
+res0: List[Int] = List(8, 5, 3, 2, 1, 1)
+
+___
+
+## Exercises: Flatten a nested list structure.
+*for now assume the list isn't empty*
+
+Example:
+
+scala> flatten(List(List(1, 1), 2, List(3, List(5, 8))))
+res0: List[Any] = List(1, 1, 2, 3, 5, 8)
+
+___
+
+## Exercises: Eliminate consecutive duplicates of list elements.
+*for now assume the list isn't empty*
+
+Example:
+
+scala> compress(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e))
+res0: List[Symbol] = List('a, 'b, 'c, 'a, 'd, 'e)
+
+___
+
+## Next time?
+
+* Reader monad?
+* ADTs and Optics?
+* Parametric Polymorphism, Higher Kinded Types, and Type Classes?
+

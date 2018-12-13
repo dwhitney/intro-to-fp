@@ -2,20 +2,20 @@
 
 "use strict";
 
-type Y = (number, number, number) => number;
-const y: Y = (m, x, b) => m * x + b;
+const { List } = require("immutable")
+
+const y = (m: number, x: number, b: number): number => m * x + b;
 const five: number = y(1, 2, 3);
 console.log(five);
 
-type Sum = Array<number> => number;
-const sum: Sum = nums => {
+const sum = (nums: List<number>): number => {
   let total = 0;
   for(let num of nums){
     total += num;
   }
   return total;
 }
-console.log(sum([1,2,3]));
+console.log(sum(List([1,2,3])));
 
 type Increment = () => void;
 type GetCount = () => number;
@@ -41,7 +41,8 @@ const helloWorld: HelloWorld = () =>
 
 helloWorld()
 
-type NaturalNumber = number //pretend this is better than this :)
+export opaque type NaturalNumber = number //pretend this is better than this :)
+export const createNaturalNumber = (n: number): Either<Error, NaturalNumber> => undefined
 type YNat = (NaturalNumber, NaturalNumber, NaturalNumber) => NaturalNumber
 const ynat: YNat = (m, x, b) => m * x + b
 
@@ -68,3 +69,15 @@ const reverse = (str: string): string =>
   (str) ? (reverse(str.slice(1)) + str[0])  : ""
 
 console.log(reverse("Hello, World!"))
+
+type Point = { x: number, y: number }
+type Points = Array<Point>
+type Chart = void 
+type SVG = void 
+
+const makePoints = (xs: Array<number>): Points => []
+const plot = (points: Points): Chart => undefined
+const toSVG = (chart: Chart): SVG => undefined
+const render = (xs: Array<number>): SVG => 
+  toSVG(plot(makePoints(xs)))
+
