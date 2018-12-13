@@ -49,6 +49,7 @@ five = 5
 def y(m : Int, x : Int, b : Int): Int = m * x + b
 val five = 5
 ```
+
 *JavaScript*
 
 [.code-highlight: 2]
@@ -113,9 +114,9 @@ let count: number = 0
 const increment = (): void  => { count++ }
 const getCount = (): number => count
 
-const result: number = getCount()
+const zero: number = getCount()
 increment()
-result === getCount() //false
+zero === getCount() //false
 ```
 
 ---
@@ -162,13 +163,15 @@ Side effecting functions:
 
 * Perform I/O (disk, network, console)
 * Get values from *outside of the program* (dates, random numbers)
-* Modify values beyond its scope
+* Mutating values beyond its scope
+
+Functions without these things make us feel safe!
 
 --- 
 
 ## Side Effects
 
-Come down from your ivory tower, Poindexter. All I do all day is make side-effects! How do I get anything done if I can't do that!
+All I do all day is make side-effects! How do I get anything done if I can't do that!
 
 ---
 
