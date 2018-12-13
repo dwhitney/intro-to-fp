@@ -94,7 +94,7 @@ def sum(nums: List[Int]): Int = {
 ```
 ___
 
-## Impure Functions
+## Impure Functions: Mutation
 
 *Scala*
 
@@ -124,7 +124,7 @@ result === getCount(); //false
 
 ---
 
-## Impure Functions
+## Impure Functions: Reading values outside the program
 
 *Scala*
 
@@ -144,21 +144,21 @@ const isTodayDayOdd: IsTodayOdd = () =>
 
 ---
 
-## More Impure Functions
+## More Impure Functions: IO
 
 *Scala*
 
 ```scala
-def helloWorld(): Unit = 
-  println("Hello, World!")
+def getText(fileName: String): String = 
+  scala.io.Source.fromFile(fileName).getLines.mkString
 ```
 
 *JavaScript*
 
 ```javascript
-type HelloWorld = () => void;
-const helloWorld: HelloWorld = () => 
-  console.log("Hello, World!")
+type GetText = (String) => String;
+const getText: GetText = (fileName) => 
+  fs.readFileSync(fileName).toString()
 ```
 
 ---
@@ -285,7 +285,7 @@ ___
 *Equational reasoning* is the notion that we can understand what to expect from a function simply by looking at a function's types and their associated properties. 
 
 ---
-## Equational Reasoning: Example
+## Equational Reasoning: Intuition 
 
 $$
 \begin{equation*}
@@ -302,7 +302,7 @@ $$
 
 ___
 
-## Equational Reasoning: Example
+## Equational Reasoning: Intuition 
 $$
 \begin{equation*}
 \begin{aligned}
@@ -318,7 +318,7 @@ $$
 
 ___
 
-## Equational Reasoning: Example
+## Equational Reasoning: Intuition 
 $$
 \begin{equation*}
 \begin{aligned}
@@ -334,7 +334,7 @@ $$
 
 ___
 
-## Equational Reasoning: Example
+## Equational Reasoning: Intuition 
 $$
 \begin{equation*}
 \begin{aligned}
@@ -350,7 +350,7 @@ $$
 
 ___
 
-## Equational Reasoning: Example
+## Equational Reasoning: Intuition 
 
 $$
 \begin{equation*}
@@ -367,7 +367,7 @@ $$
 
 ___
 
-## Equational Reasoning: Example
+## Equational Reasoning: Intuition 
 
 $$
 \begin{equation*}
@@ -394,7 +394,7 @@ $$
 
 ___
 
-## Equational Reasoning: Example
+## Equational Reasoning: Intuition 
 
 $$
 \begin{equation*}
@@ -421,7 +421,7 @@ $$
 
 ___
 
-## Equational Reasoning: Code
+## Equational Reasoning: Practice 
 
 *Scala* 
 
@@ -438,7 +438,7 @@ const addNaturalNumbers: NaturalNumberCalc = (a, b) => ...
 
 ___
 
-## Equational Reasoning: Code
+## Equational Reasoning: Practice 
 
 *Scala* 
 
@@ -454,7 +454,7 @@ const addNaturalNumbers: NaturalNumberCalc = (a, b) => ...
 ```
 ___
 
-## Equational Reasoning: Code
+## Equational Reasoning: Practice 
 
 *Scala* 
 
@@ -476,7 +476,7 @@ const createUser: CreateUser = (username, emailAddress) => ...
 
 ___
 
-## Equational Reasoning: Example
+## Equational Reasoning: Theory 
 
 Imagine each function below must be pure. How many possible implementations can each function have?
 
@@ -493,7 +493,7 @@ const foo = <A>(a: A): A => ???
 
 ___
 
-## Equational Reasoning: Example
+## Equational Reasoning: Theory 
 
 Imagine each function below must be pure. How many possible implementations can each function have?
 
@@ -508,8 +508,98 @@ def foo[A](a: A, a2: A): A = ???
 const foo = <A>(a: A, a2: A): A => ??? 
 ```
 
+___
+
+## Equational Reasoning: Theory 
+
+Imagine each function below must be pure. How many possible implementations can each function have?
+
+*Scala*
+
+```scala
+def foo(a: Int): Int = ??? 
+```
+*JavaScript*
+
+```javascript
+const foo = (a: number): number => ...
+```
+
+___
+
+
+## Equational Reasoning: Theory 
+
+Forget purity for a moment...
+
+*Scala*
+
+```scala
+def foo(a: Int): Unit = ??? 
+```
+*JavaScript*
+
+```javascript
+const foo = (a: number): Void => ...
+```
+
+___
+
+
+## Equational Reasoning: Theory 
+
+Adding properties...
+
+*Scala*
+
+```scala
+def foo[A](a: A, a2: A, combiner: (A,A) => A): A = ???
+foo(1, 2, (a, b) => a + b)
+```
+*JavaScript*
+
+```javascript
+foo("a","b", ((a,b) => a + b))
+```
+
+___
+
+## Equational Reasoning: Composition
 
 
 
 
+___
 
+## How to work this into your day to day?
+
+NO CURLY BRACES!
+
+*Scala*
+
+```scala
+val example1: IO[Int] = for {
+    m <- slope 
+    x <- xcoordinate
+    b <- yintercept 
+  } yield y(m, x, b)
+
+```
+
+*JavaScript*
+
+```javascript
+const program: IO<number> = 
+  io.of(y)
+    .ap_(slope)
+    .ap_(xcoordinate)
+    .ap_(yintercept)
+```
+
+___
+
+## Summary
+
+___
+
+## Exercises

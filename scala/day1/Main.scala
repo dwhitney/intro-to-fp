@@ -39,10 +39,6 @@ object Main extends App{
   helloWorld()
 
   
-  def foo[A](a: A): A = a
-
-  println(foo("foo"))
-
   type NaturalNumber = Int
 
   def yNat(m: NaturalNumber, x: NaturalNumber, b: NaturalNumber): NaturalNumber = m + x + b
@@ -52,5 +48,15 @@ object Main extends App{
   type User = String
 
   def getByUsernameAndPassword(username: Username, password: Password): Either[Throwable, User] = ???
+
+
+  def foo[A](a: A): A = a
+
+  println(foo("foo"))
+
+  def foo[A](a: A, a1: A, combiner : (A, A) => A): A = combiner(a, a1)
+
+  println(foo(1, 2, (a: Int, b: Int) => a + b))
+
 
 }

@@ -41,10 +41,6 @@ const helloWorld: HelloWorld = () =>
 
 helloWorld()
 
-const foo = <A>(a: A): A => a
-
-console.log(foo("foo"));
-
 type NaturalNumber = number //pretend this is better than this :)
 type YNat = (NaturalNumber, NaturalNumber, NaturalNumber) => NaturalNumber
 const ynat: YNat = (m, x, b) => m * x + b
@@ -58,3 +54,17 @@ type Either<A, B> = Either<A,B>
 type GetByUsernameAndPassword = (Username, Password) => Either<Error, User>
 const getByUsernameAndPassword: GetByUsernameAndPassword = (username, password) => null
 
+
+const foo = <A>(a: A): A => a
+
+console.log(foo("foo"));
+
+const foo2 = <A>(a: A, a2: A, combiner: (A,A) => A) =>
+  combiner(a, a2)
+
+console.log(foo2("a","b", ((a,b) => a + b)))
+
+const reverse = (str: string): string =>
+  (str) ? (reverse(str.slice(1)) + str[0])  : ""
+
+console.log(reverse("Hello, World!"))
