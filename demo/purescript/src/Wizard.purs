@@ -2,24 +2,24 @@ module Wizard where
 
 import Prelude
 
-import Form (Form(..))
+import Component (Component(..))
 import UI (class UI)
 
-newtype Wizard ui props i a = Wizard (Form ui props i a)
+newtype Wizard ui props input output = Wizard (Component ui props input output)
 
-wizard :: forall ui props i. Wizard ui props i ~> Form ui props i
-wizard (Wizard form) = form
+wizard :: forall ui props input. Wizard ui props input ~> Component ui props input
+wizard (Wizard component) = component
 
-step :: forall ui props i. Form ui props i ~> Wizard ui props i
+step :: forall ui props input. Component ui props input ~> Wizard ui props input
 step = Wizard
 
-derive instance wizardFunctor :: (UI ui) => Functor (Wizard ui props i)
+derive instance wizardFunctor :: (UI ui) => Functor (Wizard ui props input)
 
 instance wizardBind :: (UI ui) => Bind (Wizard ui props i) where
   bind :: forall a b. Wizard ui props i a -> (a -> Wizard ui props i b) -> Wizard ui props i b
-  bind (Wizard (Form f)) fab = Wizard (Form (\props i -> do
+  bind (Wizard (Component f)) fab = Wizard (Component (\props i -> do
     let rec = f props i 
-    let (Wizard (Form newFn)) = fab rec.result
+    let (Wizard (Component newFn)) = fab rec.result
     newFn props i
   ))
     

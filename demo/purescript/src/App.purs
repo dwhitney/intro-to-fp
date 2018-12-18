@@ -8,7 +8,7 @@ import Data.Symbol (SProxy(..))
 import Component (Component, focus, textBox)
 import Model (Address, Person, _address, _city, _firstName, _lastName, _state, _street, _zip)
 import UI (class UI)
-import WizardComponent (step, wizard)
+import Wizard (step, wizard)
 
 
 addressComponent :: forall ui. UI ui => Component ui Unit Address Address
@@ -22,14 +22,13 @@ addressComponent = ado
 personComponent :: forall ui. UI ui => Component ui Unit Person Person
 personComponent = ado 
   firstName <- focus _firstName (textBox "") <#> wrap
-  lastName <- focus _lastName (textBox "") <#> wrap
-  address  <- focus _address addressComponent
+  lastName  <- focus _lastName (textBox "") <#> wrap
+  address   <- focus _address addressComponent
   in { firstName, lastName, address }
 
 
 passwordComponent :: forall ui r. UI ui => Component ui Unit { password :: String, passwordConfirmation :: String | r }  String
 passwordComponent = wizard do 
-  password <- step $ focus (prop (SProxy :: SProxy "password")) (textBox "hi")
-  passwordConfirmation <- step $
-    focus (prop (SProxy :: SProxy "passwordConfirmation")) (textBox "")
+  password              <- step $ focus (prop (SProxy :: SProxy "password")) (textBox "hi")
+  passwordConfirmation  <- step $ focus (prop (SProxy :: SProxy "passwordConfirmation")) (textBox "")
   pure password
