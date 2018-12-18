@@ -3,13 +3,13 @@ module Main where
 import Prelude
 import Effect (Effect)
 import Effect.Console (log)
-import App (passwordForm)
-import Form (Form)
-import Form (run) as Form
+import App (passwordComponent)
+import Component (Component)
+import Component (run) as Component
 
 
 type PasswordRecord = { password :: String, passwordConfirmation :: String }
-type PasswordForm = Form String Unit PasswordRecord String
+type PasswordComponent = Component String Unit PasswordRecord String
 
 main :: Effect Unit
 main = do
@@ -18,7 +18,7 @@ main = do
   where
     go :: String
     go = do 
-      let { result } = Form.run (passwordForm :: PasswordForm ) unit { password : "testPassword", passwordConfirmation: "testPassword" }
+      let { result } = Component.run (passwordComponent :: PasswordComponent ) unit { password : "testPassword", passwordConfirmation: "testPassword" }
       result
 
 
