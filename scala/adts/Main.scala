@@ -1,35 +1,24 @@
 
 
-sealed trait Maybe[+A]{}
+object Main extends App{
+  case class Street(var number: Int, var name: String)
+  case class Address(var city: String, var street: Street)
+  case class Company(var name: String, var address: Address)
+  case class Employee(var name: String, var company: Company)
 
-final case class Just[+A](value: A) extends Maybe[A]
-final case object Nada extends Maybe[Nothing]
+  val employee = Employee("john", Company("awesome inc", Address("london", Street(23, "high street"))))
+  employee.company.address.street.name = employee.company.address.street.name.capitalize
 
-object Maybe{
-  
-  def fromMaybe[A](defaultValue: A)(maybe: Maybe[A]): A = maybe match {
-    case Nada => defaultValue
-    case Just(value) => value
-  }
+  employee.copy(
+    company = employee.company.copy(
+      address = employee.company.address.copy(
+        street = employee.company.address.street.copy(
+          name = employee.company.address.street.name.capitalize
+        )
+      )
+    )
+  )
+
 }
 
 
-
-
-object Main extends App {
-  
-  trait UserLike{
-    val first: String
-    val last: String
-  }
-
-  case class User(first: String, middle: String, last: String) extends UserLike
-  case class Employee(id: String, first: String, last: String) extends UserLike
-
-  def fullName(userLike: UserLike): String = userLike match {
-    case User(first, middle, last) => s"$first $middle $last"
-  }
-
-  fullName(Employee("12345", "Dustin", "Whitney"))
-  
-}

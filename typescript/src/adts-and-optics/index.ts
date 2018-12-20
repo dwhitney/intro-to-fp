@@ -1,4 +1,34 @@
 
+export interface User { 
+  readonly _tag: "User"
+  readonly firstName: string
+  readonly middleName: string
+  readonly lastName: string
+
+}
+
+export interface Street { num: number, name: string }
+export interface Address { city: string, street: Street }
+export interface Company { name: string, address: Address }
+export interface Employee { name: string, company: Company }
+export const employee: Employee = {name: 'john',company:{name:'awesome inc',address:{city:'london',street:{num: 23,name:'high street'}}}}
+
+export const capitalize = (s: string): string => s.substring(0, 1).toUpperCase() + s.substring(1)
+employee.company.address.street.name = capitalize(employee.company.address.street.name)
+
+export const employee2 = {
+  ...employee,
+  company: {
+    ...employee.company,
+    address: {
+      ...employee.company.address,
+      street: {
+        ...employee.company.address.street,
+        name: capitalize(employee.company.address.street.name)
+      }
+    }
+  }
+}
 
 export const bar = (str: string)  => {
   switch(str) {
