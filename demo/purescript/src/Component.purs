@@ -21,13 +21,6 @@ focus lens (Component f) =
     , result
     }
 
-textBox :: forall ui input output. UI ui => output -> Component ui Unit input output 
-textBox result = Component \input props -> 
-  { render : \onChange -> mempty
-  , result
-  }
-
-
 instance componentFunctor :: (UI ui) => Functor (Component ui props input) where
   map :: forall a b. (a -> b)  -> Component ui props input a -> Component ui props input b
   map fn (Component componentFn) = Component (\props input ->

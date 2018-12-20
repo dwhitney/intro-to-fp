@@ -2,8 +2,20 @@ module UI where
 
 import Prelude
 
+import Effect (Effect)
 
-class Monoid ui <= UI ui 
+type TextProps =
+  { onFocus   :: String -> Effect Unit
+  , onBlur    :: String -> Effect Unit
+  , onChange  :: String -> Effect Unit
+  }
 
-instance stringUI :: UI String
+
+class Monoid ui <= UI ui where
+  text :: TextProps -> String -> ui
+
+instance stringUI :: UI String where
+  text :: TextProps -> String -> String
+  text props input = input
+
 
