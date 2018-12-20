@@ -1,14 +1,10 @@
-# ADTs and Optics: 
-## The bread and butter of a functional domain model
-
-![inline](./dark-side.png)
-___
-
-
 ## Feedback from last time
 
+* Less content
 * Get examples from code base to relate to our everyday use
 * Encourage more engagement
+* JavaScript developers are interested!
+* Question: what do we lose by not using static types?
 
 ___
 
@@ -19,7 +15,17 @@ ___
 * ADTs today
 * Optics next time
 * Examples and exercises next time
+
 ___
+
+
+# ADTs and Optics: 
+## The bread and butter of a functional domain model
+
+![inline](./dark-side.png)
+___
+
+
 
 
 ## Goals 

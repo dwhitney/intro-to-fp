@@ -9,7 +9,7 @@ scalacOptions ++= Seq(
   "-language:implicitConversions",
   "-language:experimental.macros",
   "-unchecked",
-  "-Ywarn-dead-code",
+//  "-Ywarn-dead-code",
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard",
   "-Xfuture",

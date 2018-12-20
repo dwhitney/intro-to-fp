@@ -12,7 +12,7 @@ object Demo extends App {
     case User(first, middle, last) => s"$first $middle $last"
   }
 
-  fullName(Employee("12345", "Dustin", "Whitney"))
+  //fullName(Employee("12345", "Dustin", "Whitney"))
 
 
   sealed trait Shape
