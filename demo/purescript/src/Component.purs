@@ -17,7 +17,7 @@ focus :: forall ui props wholeInput focusedInput output. UI ui => Lens' wholeInp
 focus lens (Component f) = 
   Component \props input -> do 
     let { render, result } = f props (view lens input)
-    { render:  \onChange -> render (onChange <<< flip (set lens) input)
+    { render:  \onChange -> render (\j -> onChange (set lens j input))
     , result
     }
 
@@ -32,7 +32,8 @@ instance componentApply :: (UI ui) => Apply (Component ui props input) where
   apply (Component fnAB) (Component fnA) = Component (\props input -> do
     let recAB = fnAB props input
     let recA = fnA props input
-    recA { result = recAB.result recA.result })
+    let render = \onChange -> (recAB.render onChange) <> (recA.render onChange) 
+    { render, result : recAB.result recA.result })
 
 instance componentApplicative :: (UI ui) => Applicative (Component ui props input) where
   pure :: forall a. a -> Component ui props input a

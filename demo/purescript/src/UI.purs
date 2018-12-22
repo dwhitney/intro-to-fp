@@ -4,6 +4,8 @@ import Prelude
 
 import Effect (Effect)
 import Prim.Row (class Union)
+import React.Basic (JSX)
+import React.Basic.DOM (input) as R
 
 type SharedProps specific =
   ( onFocus   :: String -> Effect Unit
@@ -25,7 +27,7 @@ type LabelProps ui =
   )
 
 
-class Monoid ui <= UI ui where
+class (Semigroup ui, Monoid ui) <= UI ui where
   
   input 
     :: forall props props_ 
@@ -40,8 +42,6 @@ class Monoid ui <= UI ui where
     -> String
     -> ui
 
-  
-
 
 instance stringUI :: UI String where
   
@@ -50,7 +50,7 @@ instance stringUI :: UI String where
      . Union props props_ (SharedProps InputProps)
     => Record props
     -> String 
-  input props = mempty
+  input props = mempty 
 
   label 
     :: forall props props_
@@ -60,5 +60,22 @@ instance stringUI :: UI String where
     -> String 
   label props input = mempty
 
+
+instance reactBasicUI :: UI JSX where
+  
+  input 
+    :: forall props props_
+     . Union props props_ (SharedProps InputProps)
+    => Record props
+    -> JSX 
+  input props = R.input { type : "text" }
+
+  label 
+    :: forall props props_
+     . Union props props_ (SharedProps (LabelProps JSX))
+    => Record props
+    -> String 
+    -> JSX 
+  label props input = mempty
 
 
