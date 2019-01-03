@@ -5,17 +5,11 @@ import Prelude
 import Effect.Uncurried (EffectFn1)
 import Prim.Row (class Union)
 
-type EventHandler event = EffectFn1 event Unit
-
-type SharedProps specific event =
-  ( onChange  :: EventHandler event
-  | specific
-  )
+type EventHandler input = EffectFn1 input Unit 
 
 type InputProps = 
   ( placeholder :: String
-  , type        :: String
-  , value       :: String
+  , onChange :: EventHandler String
   )
 
 type LabelProps ui = 
@@ -24,17 +18,17 @@ type LabelProps ui =
   )
 
 
-class (Semigroup ui, Monoid ui) <= UI ui event where
+class (Semigroup ui, Monoid ui) <= UI ui where
 
   input 
     :: forall props props_ 
-     . Union props props_ (SharedProps InputProps event)
+     . Union props props_ InputProps
     => Record props
     -> ui
 
   label
     :: forall props props_
-     . Union props props_ (SharedProps (LabelProps ui) event)
+     . Union props props_ (LabelProps ui)
     => Record props
     -> String
     -> ui
