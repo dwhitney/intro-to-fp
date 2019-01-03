@@ -16,23 +16,23 @@ import Wizard (step, wizard)
 
 addressComponent :: forall ui event. UI ui event => Component ui event Unit Address Address
 addressComponent = ado 
- street <- focus _street (textBox mempty) <#> wrap
- city   <- focus _city (textBox mempty) <#> wrap 
- state  <- focus _state (textBox mempty) <#> wrap 
- zip    <- focus _zip (textBox mempty) <#> wrap 
+ street <- focus _street (textBox) <#> wrap
+ city   <- focus _city (textBox) <#> wrap 
+ state  <- focus _state (textBox) <#> wrap 
+ zip    <- focus _zip (textBox) <#> wrap 
  in { street, city, state, zip }
 
 personComponent :: forall ui event. UI ui event => Component ui event Unit Person Person
 personComponent = ado 
-  firstName <- focus _firstName (textBox mempty) <#> wrap
-  lastName  <- focus _lastName (textBox mempty) <#> wrap
+  firstName <- focus _firstName (textBox) <#> wrap
+  lastName  <- focus _lastName (textBox) <#> wrap
   address   <- focus _address addressComponent
   in { firstName, lastName, address }
 
-textBox :: forall ui event. UI ui event => Event event => String -> Component ui event Unit String String 
-textBox result = Component \props i -> 
+textBox :: forall ui event. UI ui event => Event event => Component ui event Unit String String 
+textBox = Component \props i -> 
   { render : \onChange -> input { placeholder : "hi", onChange : logit onChange }
-  , result
+  , result : i
   }
   where
     logit :: (String -> Effect Unit) -> EventHandler event
@@ -43,8 +43,8 @@ textBox result = Component \props i ->
 
 passwordComponent :: forall ui event r. UI ui event => Component ui event Unit { password :: String, passwordConfirmation :: String | r }  String
 passwordComponent = wizard do 
-  password              <- step $ focus (prop (SProxy :: SProxy "password")) (textBox mempty)
-  passwordConfirmation  <- step $ focus (prop (SProxy :: SProxy "passwordConfirmation")) (textBox mempty)
+  password              <- step $ focus (prop (SProxy :: SProxy "password")) (textBox)
+  passwordConfirmation  <- step $ focus (prop (SProxy :: SProxy "passwordConfirmation")) (textBox)
   pure password
 
 
