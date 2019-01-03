@@ -7,7 +7,7 @@ import Component (Component)
 import Component (run) as Component
 import Effect (Effect)
 import Model (Address, City(..), State(..), Street(..), Zip(..))
-import React (ReactElement)
+import React (ReactElement, SyntheticEvent)
 
 
 type PasswordRecord = { password :: String, passwordConfirmation :: String }
@@ -34,6 +34,6 @@ app = do
 --app = pure $ R.input { type : "text", placeholder : "hello, world!" }
 
 
-lessSimple :: Component ReactElement Unit Address Address
+lessSimple :: Component ReactElement SyntheticEvent Unit Address Address
 lessSimple = App.addressComponent
 

@@ -14,4 +14,8 @@ exports.fragment = function(children) {
   return React.createElement.apply(null, [React.Fragment, {}].concat(children));
 };
 
+exports._targetValue = function(syntheticEvent){
+  return syntheticEvent.target.value;
+};
+
 exports.empty = null;

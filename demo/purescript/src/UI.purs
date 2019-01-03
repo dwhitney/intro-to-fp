@@ -5,32 +5,24 @@ import Prelude
 import Effect.Uncurried (EffectFn1)
 import Prim.Row (class Union)
 
-type EventHandler input = EffectFn1 input Unit 
+newtype EventFn a b = EventFn (a -> b)
 
-type InputProps = 
+type EventHandler event = EffectFn1 event Unit 
+
+type InputProps event = 
   ( placeholder :: String
-  , onChange :: EventHandler String
+  , onChange :: EventHandler event
   )
 
-type LabelProps ui = 
-  ( form :: String
-  , children :: (Array ui)
-  )
+class Event event where
+  targetValue :: event -> String
 
-
-class (Semigroup ui, Monoid ui) <= UI ui where
+class (Semigroup ui, Monoid ui, Event event) <= UI ui event where
 
   input 
     :: forall props props_ 
-     . Union props props_ InputProps
+     . Union props props_ (InputProps event)
     => Record props
-    -> ui
-
-  label
-    :: forall props props_
-     . Union props props_ (LabelProps ui)
-    => Record props
-    -> String
     -> ui
 
 
