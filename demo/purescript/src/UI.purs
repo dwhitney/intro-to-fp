@@ -2,16 +2,13 @@ module UI where
 
 import Prelude
 
-import Effect (Effect)
+import Effect.Uncurried (EffectFn1)
 import Prim.Row (class Union)
-import React.Basic (JSX)
-import React.Basic.DOM (input) as R
 
-type SharedProps specific =
-  ( onFocus   :: String -> Effect Unit
-  , onBlur    :: String -> Effect Unit
-  , onChange  :: String -> Effect Unit
-  , onClick   :: String -> Effect Unit
+type EventHandler event = EffectFn1 event Unit
+
+type SharedProps specific event =
+  ( onChange  :: EventHandler event
   | specific
   )
 
@@ -27,55 +24,19 @@ type LabelProps ui =
   )
 
 
-class (Semigroup ui, Monoid ui) <= UI ui where
-  
+class (Semigroup ui, Monoid ui) <= UI ui event where
+
   input 
     :: forall props props_ 
-     . Union props props_ (SharedProps InputProps)
+     . Union props props_ (SharedProps InputProps event)
     => Record props
     -> ui
 
   label
     :: forall props props_
-     . Union props props_ (SharedProps (LabelProps ui))
+     . Union props props_ (SharedProps (LabelProps ui) event)
     => Record props
     -> String
     -> ui
-
-
-instance stringUI :: UI String where
-  
-  input 
-    :: forall props props_
-     . Union props props_ (SharedProps InputProps)
-    => Record props
-    -> String 
-  input props = mempty 
-
-  label 
-    :: forall props props_
-     . Union props props_ (SharedProps (LabelProps String))
-    => Record props
-    -> String 
-    -> String 
-  label props input = mempty
-
-
-instance reactBasicUI :: UI JSX where
-  
-  input 
-    :: forall props props_
-     . Union props props_ (SharedProps InputProps)
-    => Record props
-    -> JSX 
-  input props = R.input { type : "text" }
-
-  label 
-    :: forall props props_
-     . Union props props_ (SharedProps (LabelProps JSX))
-    => Record props
-    -> String 
-    -> JSX 
-  label props input = mempty
 
 

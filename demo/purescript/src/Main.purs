@@ -3,19 +3,16 @@ module Main where
 import Prelude
 
 import App (addressComponent) as App
-import App (passwordComponent, textBox)
 import Component (Component)
 import Component (run) as Component
 import Effect (Effect)
-import Effect.Console (log)
 import Model (Address, City(..), State(..), Street(..), Zip(..))
-import React (ReactElement)
-import React.Basic (JSX)
+import React (ReactElement, SyntheticEvent)
 
 
 type PasswordRecord = { password :: String, passwordConfirmation :: String }
 type PasswordComponent = Component String Unit PasswordRecord String
-
+{-
 main :: Effect Unit
 main = do
   let result = go
@@ -25,6 +22,8 @@ main = do
     go = do 
       let { result } = Component.run (passwordComponent :: PasswordComponent ) unit { password : "testPassword", passwordConfirmation: "testPassword" }
       result
+-}
+
 
 app :: Effect ReactElement 
 app = do
@@ -35,11 +34,6 @@ app = do
 --app = pure $ R.input { type : "text", placeholder : "hello, world!" }
 
 
-lessSimple :: Component ReactElement Unit Address Address
+lessSimple :: Component ReactElement SyntheticEvent Unit Address Address
 lessSimple = App.addressComponent
 
-simple :: Component JSX Unit String Unit
-simple = ado 
-  _ <- textBox "Hi!"
-  _ <- textBox "Bye!"
-  in unit

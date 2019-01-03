@@ -7,6 +7,8 @@ import UI (class UI, InputProps, SharedProps, LabelProps)
 
 foreign import data ReactElement :: Type 
 
+foreign import data SyntheticEvent :: Type
+
 foreign import createElement :: forall r. String -> { | r } -> ReactElement -> ReactElement
 
 foreign import fragment :: Array ReactElement -> ReactElement
@@ -19,18 +21,18 @@ instance reactElementSemigroup :: Semigroup ReactElement where
 instance reactElementMonoid :: Monoid ReactElement where
   mempty = empty
 
-instance reactElementUI :: UI ReactElement where
+instance reactElementUI :: UI ReactElement SyntheticEvent where
  
   input 
     :: forall props props_
-     . Union props props_ (SharedProps InputProps)
+     . Union props props_ (SharedProps InputProps SyntheticEvent)
     => Record props
     -> ReactElement 
   input props = createElement "input" props empty
 
   label 
     :: forall props props_
-     . Union props props_ (SharedProps (LabelProps ReactElement))
+     . Union props props_ (SharedProps (LabelProps ReactElement) SyntheticEvent)
     => Record props
     -> String 
     -> ReactElement 
