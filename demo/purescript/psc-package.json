@@ -6,7 +6,6 @@
     "console",
     "effect",
     "prelude",
-    "profunctor-lenses",
-    "react-basic"
+    "profunctor-lenses"
   ]
 }
