@@ -9,6 +9,7 @@ import Component (run) as Component
 import Effect (Effect)
 import Effect.Console (log)
 import Model (Address, City(..), State(..), Street(..), Zip(..))
+import React (ReactElement)
 import React.Basic (JSX)
 
 
@@ -25,7 +26,7 @@ main = do
       let { result } = Component.run (passwordComponent :: PasswordComponent ) unit { password : "testPassword", passwordConfirmation: "testPassword" }
       result
 
-app :: Effect JSX
+app :: Effect ReactElement 
 app = do
   let address = { street : Street "street", city : City "city", state : State "NY", zip : Zip "11205" }
   let fn = Component.run lessSimple 
@@ -34,7 +35,7 @@ app = do
 --app = pure $ R.input { type : "text", placeholder : "hello, world!" }
 
 
-lessSimple :: Component JSX Unit Address Address
+lessSimple :: Component ReactElement Unit Address Address
 lessSimple = App.addressComponent
 
 simple :: Component JSX Unit String Unit
