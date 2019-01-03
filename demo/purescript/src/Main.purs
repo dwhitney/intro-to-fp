@@ -30,13 +30,13 @@ app :: Effect ReactElement
 app = do
   let address = { street : Street "street", city : City "city", state : State "NY", zip : Zip "11205" }
   let fn = Component.run lessSimple 
-  pure $ (fn unit address).render (\addy -> do
+  pure $ (fn address).render (\addy -> do
     let s = spy "addy" addy 
     pure unit)
 -- pure $ ((Component.run simple) unit "Yo!").render (\str -> log str)
 --app = pure $ R.input { type : "text", placeholder : "hello, world!" }
 
 
-lessSimple :: Component ReactElement SyntheticEvent Unit Address Address
+lessSimple :: Component ReactElement SyntheticEvent Address Address
 lessSimple = App.addressComponent
 

@@ -14,7 +14,7 @@ import UI (class Event, class UI, EventHandler, input, targetValue)
 import Wizard (step, wizard)
 
 
-addressComponent :: forall ui event. UI ui event => Component ui event Unit Address Address
+addressComponent :: forall ui event. UI ui event => Component ui event Address Address
 addressComponent = ado 
  street <- focus _street textBox <#> wrap
  city   <- focus _city textBox <#> wrap 
@@ -22,15 +22,15 @@ addressComponent = ado
  zip    <- focus _zip textBox <#> wrap 
  in { street, city, state, zip }
 
-personComponent :: forall ui event. UI ui event => Component ui event Unit Person Person
+personComponent :: forall ui event. UI ui event => Component ui event Person Person
 personComponent = ado 
   firstName <- focus _firstName textBox <#> wrap
   lastName  <- focus _lastName textBox <#> wrap
   address   <- focus _address addressComponent
   in { firstName, lastName, address }
 
-textBox :: forall ui event. UI ui event => Event event => Component ui event Unit String String 
-textBox = Component \props i -> 
+textBox :: forall ui event. UI ui event => Event event => Component ui event String String 
+textBox = Component \i -> 
   { render : \onChange -> input { placeholder : "hi", onChange : logit onChange }
   , result : i
   }
@@ -41,7 +41,7 @@ textBox = Component \props i ->
       log str
       onChange str
 
-passwordComponent :: forall ui event r. UI ui event => Component ui event Unit { password :: String, passwordConfirmation :: String | r }  String
+passwordComponent :: forall ui event r. UI ui event => Component ui event { password :: String, passwordConfirmation :: String | r }  String
 passwordComponent = wizard do 
   password              <- step $ focus (prop (SProxy :: SProxy "password")) (textBox)
   passwordConfirmation  <- step $ focus (prop (SProxy :: SProxy "passwordConfirmation")) (textBox)

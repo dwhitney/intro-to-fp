@@ -5,29 +5,29 @@ import Prelude
 import Component (Component(..))
 import UI (class UI)
 
-newtype Wizard ui event props input output = Wizard (Component ui event props input output)
+newtype Wizard ui event input output = Wizard (Component ui event input output)
 
-wizard :: forall ui event props input. Wizard ui event props input ~> Component ui event props input
+wizard :: forall ui event input. Wizard ui event input ~> Component ui event input
 wizard (Wizard component) = component
 
-step :: forall ui event props input. Component ui event props input ~> Wizard ui event props input
+step :: forall ui event input. Component ui event input ~> Wizard ui event input
 step = Wizard
 
-derive instance wizardFunctor :: (UI ui event) => Functor (Wizard ui event props input)
+derive instance wizardFunctor :: (UI ui event) => Functor (Wizard ui event input)
 
-instance wizardBind :: (UI ui event) => Bind (Wizard ui event props i) where
-  bind :: forall a b. Wizard ui event props i a -> (a -> Wizard ui event props i b) -> Wizard ui event props i b
-  bind (Wizard (Component f)) fab = Wizard (Component (\props i -> do
-    let rec = f props i 
+instance wizardBind :: (UI ui event) => Bind (Wizard ui event i) where
+  bind :: forall a b. Wizard ui event i a -> (a -> Wizard ui event i b) -> Wizard ui event i b
+  bind (Wizard (Component f)) fab = Wizard (Component (\i -> do
+    let rec = f i 
     let (Wizard (Component newFn)) = fab rec.result
-    newFn props i
+    newFn i
   ))
     
-instance wizardApply :: (UI ui event) => Apply (Wizard ui event props i) where
-  apply :: forall a b. Wizard ui event props i (a -> b) -> Wizard ui event props i a -> Wizard ui event props i b
+instance wizardApply :: (UI ui event) => Apply (Wizard ui event i) where
+  apply :: forall a b. Wizard ui event i (a -> b) -> Wizard ui event i a -> Wizard ui event i b
   apply (Wizard fab) (Wizard fa) = Wizard (apply fab fa)
 
-instance wizardApplicative :: (UI ui event) => Applicative (Wizard ui event props i) where
-  pure :: forall a. a -> Wizard ui event props i a
+instance wizardApplicative :: (UI ui event) => Applicative (Wizard ui event i) where
+  pure :: forall a. a -> Wizard ui event i a
   pure a = Wizard (pure a)
 
