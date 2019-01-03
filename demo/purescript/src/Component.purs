@@ -3,8 +3,8 @@ module Component where
 import Prelude
 
 import Data.Lens (Lens', set, view)
+import Debug.Trace (spy)
 import Effect (Effect)
-import Effect.Console (log)
 import UI (class UI)
 
 type Result ui input output = { render :: (input -> Effect Unit) ->  ui, result :: output }
@@ -18,7 +18,9 @@ focus :: forall ui event props wholeInput focusedInput output. UI ui event => Le
 focus lens (Component f) = 
   Component \props input -> do 
     let { render, result } = f props (view lens input)
-    { render:  \onChange -> render (\j -> onChange (set lens j input) >>= (const $ log "focus"))
+    { render:  \onChange -> render (\j -> onChange (set lens j input) >>= (const $ do
+          let s = spy "focus" input 
+          pure unit))
     , result
     }
 

@@ -16,16 +16,16 @@ import Wizard (step, wizard)
 
 addressComponent :: forall ui event. UI ui event => Component ui event Unit Address Address
 addressComponent = ado 
- street <- focus _street (textBox) <#> wrap
- city   <- focus _city (textBox) <#> wrap 
- state  <- focus _state (textBox) <#> wrap 
- zip    <- focus _zip (textBox) <#> wrap 
+ street <- focus _street textBox <#> wrap
+ city   <- focus _city textBox <#> wrap 
+ state  <- focus _state textBox <#> wrap 
+ zip    <- focus _zip textBox <#> wrap 
  in { street, city, state, zip }
 
 personComponent :: forall ui event. UI ui event => Component ui event Unit Person Person
 personComponent = ado 
-  firstName <- focus _firstName (textBox) <#> wrap
-  lastName  <- focus _lastName (textBox) <#> wrap
+  firstName <- focus _firstName textBox <#> wrap
+  lastName  <- focus _lastName textBox <#> wrap
   address   <- focus _address addressComponent
   in { firstName, lastName, address }
 
